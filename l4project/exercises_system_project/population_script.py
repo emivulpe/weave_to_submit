@@ -255,41 +255,28 @@ def add_explanation(step, element):
 if __name__ == '__main__':
 	print "Starting DocumentFragment population script..."
 	
-	print 'Number of arguments:', len(sys.argv), 'arguments.'
-	print 'Argument List:', str(sys.argv)
-	
 	os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'exercises_system_project.settings')
 	from exerciser.models import FragmentStyle, Document, DocumentType, FragmentType, Fragment, Step, Change, Question, Explanation, Option, Application, Panel, AcademicYear
 	from django.db import IntegrityError
 	from django.core.exceptions import ObjectDoesNotExist
 	
-	# Specify the file containing Doc Types
+	
+	# If the path to the examples is specified as a command line argument, take it, else assume the examples are placed in the examples folder
 	if len(sys.argv) > 1:
-		doc_types_path = sys.argv[1]
-	else: 
-		doc_types_path = os.path.join(os.path.dirname(__file__), 'cs1ct/Doc Types.xml')
+		path = sys.argv[1]
+	else:
+		path = os.path.join(os.path.dirname(__file__), 'examples/')
+	
+	doc_types_path = os.path.join(path, 'Doc Types.xml')
 	populate_doc_types(doc_types_path)
 	
-	# Specify the file containing Documents
-	if len(sys.argv) > 2:
-		documents_path = sys.argv[2]
-	else: 
-		documents_path = os.path.join(os.path.dirname(__file__), 'newexample/Documents.xml')
+	documents_path = os.path.join(path, 'Documents.xml')
 	populate_documents(documents_path)
 
-	# Specify the file containing Applications
-	if len(sys.argv) > 3:
-		applications_path = sys.argv[3]
-	else: 
-		applications_path = os.path.join(os.path.dirname(__file__), 'newexample/Applications.xml')
+	applications_path = os.path.join(path, 'Applications.xml')
 	populate_applications(applications_path)
 	
-	
-	# Specify the file containing Processes
-	if len(sys.argv) > 4:
-		processes_path = sys.argv[4]
-	else:
-		processes_path = os.path.join(os.path.dirname(__file__), 'newexample/Processes.xml')
+	processes_path = os.path.join(path, 'Processes.xml')
 	populate_processes(processes_path)
 	
 	#Add an academic year
