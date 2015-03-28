@@ -1,0 +1,60 @@
+html, body {
+	max-width: 100%;
+	overflow-x: hidden;
+}
+#outer_panel{
+
+	margin:5px;
+}
+
+#panel_container{
+	height:100%;
+	width:100%;
+}
+
+#panel_row{
+	overflow:hidden;
+	text-align:left;
+	width : {{panel_size}}%;
+	height:100%;
+	border:1px solid black;
+}
+
+.fragment{
+	margin : 2px
+}
+
+#explanation_row{
+	margin:5px;
+	height : 30%;
+}
+
+#explanation_container{
+	height : 100%;
+}
+
+#north{
+	z-index: 90;
+}
+
+.question{
+	padding: 0px 10px 0px 10px;
+}
+
+#question_submit{
+	text-align: center;
+}
+
+#question_dialogue{
+	width: 100%;
+	border: 0px;
+}
+.caret{
+	color:gray;
+}
+.centered {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}

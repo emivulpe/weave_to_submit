@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% load static %}
+<html style = "margin-top:0px;">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>Teacher Interface</title>
+
+		<link rel="stylesheet" href="{% static 'font-awesome-4.2.0/css/font-awesome.min.css' %} ">
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/teacher_interface.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}" />
+		{% block links %} {% endblock %}
+		{% block style %} {% endblock %}
+
+	</head>
+
+	<body>
+
+	<nav id="teacher_navbar" class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+				<div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
+					<ul class="nav navbar-nav navbar-left">
+						<li>
+							<a class="navbar-brand" href="/weave/teacher_interface/">
+							<i class="fa fa-home fa-lg landing-icon fa-2x"></i><span class="landing-text">Home</span>
+							</a>
+						</li>
+					</ul>
+					{% if user.is_authenticated %}
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="/weave/logout/"><i class="fa fa-lock fa-lg landing-icon fa-2x"></i><class="landing-text">Logout</span></a>
+						</li>
+						
+					</ul>
+					{% endif %}
+				</div>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<header id="content_container"class="intro">
+		<div class="intro-body">
+		{% block body_block %}{% endblock %}
+		</div>
+	</header>
+	<script type="text/javascript" src="{% static 'js/jquery-2.1.1.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/cookieAccessor.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/teacher_interface_base.js' %}"></script>
+
+	{% block javascripts %}{% endblock %}
+	</body>
+</html>

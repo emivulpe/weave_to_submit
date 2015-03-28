@@ -1,0 +1,91 @@
+{% extends 'exerciser/teacher_interface_base.html' %}
+{% load static %}
+{% block links %} 	
+	<link rel="stylesheet" type="text/css" href="{% static 'css/ui.dropdownchecklist.themeroller.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui-1.8.4.custom.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'css/graph_viewer.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'css/highslide.css' %}"/>
+{% endblock %}
+
+
+{% block body_block %}
+	<div class="container" style="background:gray;width: 100%;">
+		<select id="group_year" class="year choice_selector">
+			<option value="" disabled selected style="display:none;">Select academic year...</option>
+			{% for year in academic_years %}
+				<option value="{{year.start}}" >{{ year.start}}/{{ year.start|add:"1" }}</option>
+			{% endfor %}
+		</select>
+		<select id="group_list" class="group choice_selector">
+			<option value="" disabled selected style="display:none;">Select group...</option>
+		</select>
+
+		<select id="statistics_options" class="choice_selector">
+			<option id="stats_info" value="" disabled selected style="display:none;">Select data type...</option>
+			<option value="Average Time">Average Time</option>
+			<option value="Student Answers">Student Answers</option>
+			<option value="summary_data">Class Summary</option>
+			<option value="Class Steps">Class Steps</option>
+			<option value="Student Time">Student Time</option>
+		</select>
+		<span class="ui-widget" style="font-family:inherit;">
+			<input id="application" class="choice_selector" placeholder="Select application..." style="font-family:inherit; font-size:12pt;padding:3px;">
+		</span>
+
+		<select id="question_list" class="choice_selector" style="max-width:200px;display:none;">
+			<option id="question_info" value="" disabled selected style="display:none;">Select question...</option>
+		</select>
+		<select id="student_list" class="choice_selector" style="max-width:200px;display:none;">
+			<option id="student_info" value="" disabled selected style="display:none;">Select student...</option>
+		</select>
+		<select id="step_list" class="choice_selector" style="max-width:200px;display:none;">
+			<option id="step_info" value="" disabled selected style="display:none;">Select step...</option>
+		</select>
+
+		<button id="set_data_button" class="autocompare choice_selector" style="padding:3px;">View data</button>
+
+	</div>
+	<div style = "text-align:center">
+		<button id="prev_step_button" style="visibility:hidden;" onclick="getPrevStepData()">Previous Step</button>
+		<button id="next_step_button" style="visibility:hidden;" onclick="getNextStepData()">Next Step</button>
+	</div>
+	<div id="container" style="display:none;width:100%; min-height:80vh; text-align: center;font-size: 12pt; font-weight: bold;"> </div>
+	
+	<table id="summary_data" border="1" style="display:none;margin: 0 auto">
+		<caption id="summary_data_caption" style="text-align: center;margin:auto;">test</caption>
+		<tr>
+			<th>Student ID</th>
+			<th>Total time (s)</th>
+			<th>Steps backwards</th>
+			<th>Last step</th>
+		</tr>
+	</table>
+
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{% static 'js/highcharts.js' %}"></script>
+	<script src="{% static 'js/exporting.js' %}"></script>
+	<script src="{% static 'js/customEvents.js' %}"></script>
+	<script src="{% static 'js/data.js' %}"></script>
+	<!-- Additional files for the Highslide popup effect TODO download these --> 
+	<script type="text/javascript" src="{% static 'js/highslide-full.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/highslide.config.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery-ui.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/ui.dropdownchecklist-1.1-min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/graph_viewer.js' %}"></script>
+
+	<script>
+		hs.zIndexCounter = 1000000;
+		// extract some relevant information from the context
+		{% autoescape off %}
+		var app_questions_dict = {{app_questions_dict}}; // Mapping between an application and the questions for the application 
+		var applications = {{application_names}}; // List of all the application names
+		var selectedStatistics = "";
+		{% endautoescape %}
+		var chart_num=0; // uniquely identifies generated charts
+		var step=0; 
+		var maxStep=0;
+	</script>
+	
+{% endblock %}

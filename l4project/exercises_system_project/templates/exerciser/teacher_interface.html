@@ -1,0 +1,360 @@
+{% extends 'exerciser/teacher_interface_base.html' %}
+{% load static %}
+
+{% block links %} 
+	<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/teacher_interface.css' %}" />
+{% endblock %}
+
+{% block body_block %}
+
+	{% if user.is_authenticated %}
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 text-center">
+					<h1>Register/Update a group</h1><br>
+					<form id="register_or_update_group_form">
+					<table class = "choice_selector" >
+						<tr>
+							<td class = "choice_selector" style="text-align:right;padding-right:10px;">Action:
+							</td>
+							<td>
+								<input id="register_group" type="radio" name="action" value="register" checked><label for="register_group">Register</label>
+							</td>
+							<td>
+								<input id = "update_group"type="radio" name="action" value="update"><label for="update_group">Update</label>
+							</td>
+							<td>
+								<input id = "delete_group"type="radio" name="action" value="delete"><label for="delete_group">Delete</label>
+							</td>
+
+						</tr>
+						<tr>
+							<td style="text-align:right;padding:10px;">
+								<label for="year">Academic Year:</label>
+							</td>
+							<td colspan="3">
+								<select id="year" class="year choice_selector" style="width:100%;">
+									{% for year in academic_years %}
+										<option value="{{year.start}}" >{{ year.start}}/{{ year.start|add:"1" }}</option>
+									{% endfor %}
+								</select>
+							</td>
+							<td style="padding-left:10px;">
+								<i class="fa fa-question-circle" title="Select the academic year to which the selected group belongs/will belong."></i>
+							</td>
+						</tr>
+						<tr class="register_group_specific" style="display:none;">
+							<td style="text-align:right;padding-right:10px;">
+								<label>Group ID:</label>
+							</td>
+							<td colspan="3">
+								<input id="group_id_entry" type="text" name="group_id_entry">
+							</td>
+							<td style="padding-left:10px;">
+								<i class="fa fa-question-circle" title="Choose a name for the group."></i>
+							</td>
+						</tr>
+						<tr class="register_group_specific">
+							<td style="text-align:right; padding-right:10px;">
+								<span id="existing_groups">Existing groups: </span>
+							</td>
+							<td colspan="4"class="existing_groups_list" style="text-align:left;">
+							</td>
+
+						</tr>
+						<tr id ="group_id_select" style="display:none;">
+							<td style="text-align:right;padding-right:10px;">
+								<label for="group_id">Group ID:</label>
+							</td>
+							<td colspan="3" >
+								<select id="group_entry" class="group" style = "width:100%;"></select>
+							</td>
+							<td style="padding-left:10px;">
+								<i class="fa fa-question-circle" title="Choose the name of the group you want to update/delete."></i>
+							</td>
+						</tr>
+						<tr class="update_group_specific">
+							<td style="text-align:right;padding-right:10px;">
+								<label for="num_students">Number of students:</label>
+							</td>
+							<td colspan="3">
+								<input id="num_students" type="number" min="0" name="num_students" onkeypress="return isNumber(event)">
+							</td> 
+							<td style="padding-left:10px;">
+								<i class="fa fa-question-circle" title="Enter the number of students you would like to add ids for in the selected group."></i>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td colspan="4">	
+								<input id="save_group_button" type="reset" value="Register">
+							</td>
+						</tr>
+					</table>
+
+					</form>
+					<br>
+					<strong id="group_success_message"></strong>
+				</div>
+
+				<div class="col-md-4 text-center">
+					<h1>View group list</h1><br>
+					<form id="register_or_update_group_form" style="text-align:center;">
+						<table class = "choice_selector" style="margin: 0 auto;">
+							<tr>
+								<td style="text-align:right;padding-right:10px;">
+									<label for="year">Academic Year:</label> 
+								</td>
+								<td style="text-align:left;">
+									<select id="group_year" class="year">
+									{% for year in academic_years %}
+										<option value="{{year.start}}" >{{ year.start}}/{{ year.start|add:"1" }}</option>
+									{% endfor %}
+									</select>
+								</td>
+								<td style="padding-left:10px;">
+									<i class="fa fa-question-circle" title="Select the academic year for the group."></i>
+								</td>
+							</tr>
+							<tr>
+								<td style="text-align:right;padding-right:10px;">
+									<label for="group">Group ID:</label>
+								</td>
+								<td style="text-align:left;">
+									<select id="group" class="group" style="width:100%;"></select>
+								</td>
+								<td style="padding-left:10px;">
+									<i class="fa fa-question-circle" title="Select the group you would like to see ids for."></i>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3" style="padding-top:10px;">
+									<input id="view_group_list" type="reset" value="View">
+								</td>
+							</tr>
+						</table>
+					</form>
+					<br>
+					<strong id="student_success_message"></strong>
+				</div>
+				<div class="col-md-4 text-center">
+					<h1 class="brand-heading"><a href="/weave/statistics/"><i class="fa fa-bar-chart landing-icon fa-lg fa-5x"></i><br><br><span class="landing-text">View Progress</span></a></h1>
+				</div>
+			</div>			
+		</div>
+
+
+	{% else %}
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 text-center">
+					{% if request.session.registered = True %}
+						<br/><br/><br/><br/><br/>
+						<div style="font-size: 12pt; font-weight: bold;"> 
+							<i class="fa fa-check success" style="color:green;"></i>
+							<strong class="success" style="color:green;">Thank you for registering! Please log in</strong>
+						</div>
+					{% elif request.session.registered = False %}
+
+						<h1>Register here!</h1><br />
+						
+						<form id="user_form" method="post" action="/weave/register/" enctype="multipart/form-data">
+							{% csrf_token %}
+
+							<!-- Display each form. The as_p method wraps each element in a paragraph
+							(<p>) element. This ensures each element appears on a new line,
+							making everything look neater. -->
+							<table style="margin-left:auto; margin-right:auto;">
+								{% for field in user_form %}
+									<tr>
+										<td style="vertical-align:top;text-align:right;">
+											{{ field.label_tag }}
+										</td>
+										<td style="padding-left:5px;">
+											<p>
+												{{ field }}
+											</p>
+										</td>
+									</tr>
+								{% endfor %}
+							</table>
+							<input type="hidden" name="can_analyse" id="consent_value" value="-1" />
+
+							<!-- Provide a button to click to submit the form. -->
+							<input id="register_user_button" type="submit" value="Register" />
+						</form><br/>
+						<div style="font-size: 12pt; font-weight: bold;"> 
+							<i class="fa fa-close success" style="color:red;"></i>
+							<strong class="success" style="color:red;">Your registration was unsuccessful.You might have not entered the same password. If you are sure you have, please try again with a different username!</strong>
+						</div>
+					{% else %}
+						<h1>Register here!</h1><br />
+						
+						<form id="user_form" method="post" action="/weave/register/" enctype="multipart/form-data">
+							{% csrf_token %}
+
+							<!-- Display each form. The as_p method wraps each element in a paragraph
+							(<p>) element. This ensures each element appears on a new line,
+							making everything look neater. -->
+							
+							<table style="margin-left:auto; margin-right:auto;">
+								{% for field in user_form %}
+									<tr>
+										<td style="vertical-align:top;text-align:right;">
+											{{ field.label_tag }}
+										</td>
+										<td style="padding-left:5px;">
+											<p>
+												{{ field }}
+											</p>
+										</td>
+									</tr>
+								{% endfor %}
+							</table>
+							
+							<input type="hidden" name="can_analyse" id="consent_value" value="-1" />
+
+							<!-- Provide a button to click to submit the form. -->
+							<input id="register_user_button" type="submit" value="Register" />
+						</form>
+					{% endif %}
+				</div>
+				<div class="col-md-6 text-center">
+					<h1>Login to WEAVE</h1>
+					<form id="login_form" method="post" action="/weave/login/"><br>
+						{% csrf_token %}
+						<p><label for="id_username">Username:</label> <input id="id_username" maxlength="30" name="username" type="text"></p>
+						<p><label for="id_password">Password:</label> <input id="id_password" name="password" type="password"></p>
+						<input id="login_button" type="submit" value="Log in"/>
+					</form>
+					{% if request.session.successful_login = False %}
+						<br/>
+						<div style="font-size: 12pt; font-weight: bold;"> 
+							<i class="fa fa-close success" style="color:red;"></i>
+							<strong class="success" style="color:red;">Sorry but your attempt to login was unsuccessful! Please try again!</strong>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+
+	{% endif %}
+	
+	<div id="success_dialog" title="Success message" style="display:none;">
+	<span id = "success_message"></span>
+	</div>
+
+	<div id="consent_dialog" title="Consent form" style="margin:20px;display:none;">
+		<div id = "consent_message">
+		<strong>Information Sheet: Testing the extent to which a new educational tool fits the current educational process in schools</strong>
+		<strong>
+			The tool
+		</strong>
+		<p>A new web-based application has been developed as a Glasgow University project. It presents worked examples to pupils that allow them to follow approaches to solving problems step by step where a detailed explanation of the way of thinking involved at each step is provided. This application is offered via the local teacher hubs of the PLAN C project, but is available to any teacher in Scotland. It is to be used in schools as a regular teaching technique. </p>
+			<p>The application supports two interfaces- a student’s and a teacher’s interface.</p>
+			<p>In the teacher’s interface, teachers can register with a username and password. This username should be unique to the teacher’s institution, but should not identify it. Teachers are asked for their consent to analyse the data associated with their usernames- note, the data cannot be traced back to the school. They are also able to provide an email address so that they receive summary of the analyses made. This email will not be linked to their school username. Once teachers are registered and logged in, they are able to register groups for their classes, as well as individual pupil ids. Furthermore, teachers can see graphs of how students from their groups used the application.</p>
+			<p>The student’s interface has the option for students to enter their school and group ids provided by their teacher, as well as an individual pupil id generated by the teacher’s interface on request. None of these is compulsory. Pupils are provided with worked examples to study on-line.</p>
+			<strong>Collection of data</strong>
+			<p>The system will collect pupil usage data for the evaluation period 1-28 February 2015. This will be automatically analysed to determine:</p>
+			<p>-usage patterns during a single session</p>
+			<p>-usage patterns by the same pupil across multiple sessions, where this possible.</p>
+			<p>Note that associations between particular real schools, classes and pupils and the data held in the system are not maintained, neither is any other identifying information. </p>
+			<p>Data will be retained securely for a five-year period to 1 February 2020.</p>
+			<strong>The evaluation</strong>
+			<p> The aim of this evaluation is to test to what extend a newly developed educational tool can be incorporated into the every-day educational process in schools.</p>
+			<p>At the start, if you want to, you can register with a username and password. This will give you the opportunity to create groups for your classes together with individual pupil ids and analyse the data generated from your pupils via graphs, which will appear on your profile. You would have to provide your pupils with the school, group and pupil ids you generated for their class. Alternatively, you may decide not to give any ids to your pupils. This, however, would mean that you wouldn’t be able to see any usage data. </p>
+			<p>Pupils should attempt several examples provided in the tool. </p>
+			<p>At the end of the experiment, if you have submitted your email you will be asked to complete a questionnaire. </p>
+			<p>All the results will remain in strict confidence. It will be your choice of whether you provide us with the school, group and pupil ids generated at the start of the evaluation so that we are able to analyse usage data by school, class and pupil. Note that even if this consent is given, we cannot identify the real school, class or pupil- we are just able to aggregate the data. We would not ask for any identification on an individual level. If you do not give us the consent to use your username and group and pupil ids in our study, we will disallow analysis of any data connected with them.</p>
+			<p>Please note that this is evaluating to what extend the tool may be used as a teaching technique in schools in the future, and not you or any of the pupils. You and any other participant may withdraw from the experiment at any time and any information recorded will be discarded. </p>
+			<p>If you have any further questions regarding this experiment, please contact:
+			Emilia Vulpe
+			1106723v@student.gla.ac.uk </p>
+			<p>This study adheres to the BPS ethical guidelines.</p>
+		</div>
+	</div>
+ 
+{% endblock %}
+
+{% block javascripts %}
+
+	<script type="text/javascript" src="{% static 'js/teacher_interface.js' %}"></script>
+	<script>
+
+		{% autoescape off %}
+		var year_group_dict = {{groups}}; // Mapping between the academic years and the groups for each
+		{% endautoescape %}
+
+
+		$('#view_group_list').click(function () {
+			var chosen_group = document.getElementById("group").value;
+			var selected_year=$("#group_year").val();
+			var variables="?group="+chosen_group+"&teacher={{ user.username }}&year="+selected_year;
+			window.location="/weave/get_group_list"+variables;
+		});
+		
+		$(function () {
+			{% if user.is_authenticated %}
+				populateGroupList("group_year","group");
+				populateGroupList("year","group_entry");
+				setGroupChoice();
+			{% endif %}
+		});
+		
+		// A function for deleting a group
+		function deleteGroup(chosenYear){
+			var chosenGroup = $('#group_entry').val(); //Get the chosen group
+			// Send a request to update a group
+			request = $.post("/weave/delete_group/",{
+				csrfmiddlewaretoken : csrftoken,
+				teacher : "{{ user.username }}",
+				group : chosenGroup,
+				year : chosenYear,
+			});
+
+			// Receive a response
+			request.done(function(success) {
+				showSuccessMessage(success,chosenGroup);
+			});
+		}
+		// A function to deal with the logic for registering a new group
+		function registerGroup(chosenYear,numStudents){
+			var chosenGroup = $('input:text[name=group_id_entry]').val(); //Get the chosen group
+
+			// Send a request to register a group
+			request = $.post("/weave/create_group/",{
+				csrfmiddlewaretoken : csrftoken,
+				teacher : "{{ user.username }}",
+				group : chosenGroup,
+				year : chosenYear,
+				num_students : numStudents
+			});
+
+			// Receive a response
+			request.done(function(success) {
+				showSuccessMessage(success,chosenGroup);
+			});
+		}
+
+		// A function for updating a group
+		function updateGroup(chosenYear,numStudents){
+			var chosenGroup = $('#group_entry').val(); //Get the chosen group
+
+			// Send a request to update a group
+			request = $.post("/weave/update_group/",{
+				csrfmiddlewaretoken : csrftoken,
+				teacher : "{{ user.username }}",
+				group : chosenGroup,
+				year : chosenYear,
+				num_students : numStudents
+			});
+
+			// Receive a response
+			request.done(function(success) {
+				showSuccessMessage(success,chosenGroup);
+			});
+		}
+
+	</script>
+{% endblock %}

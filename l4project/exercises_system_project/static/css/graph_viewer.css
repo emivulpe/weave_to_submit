@@ -1,0 +1,15 @@
+#container{
+	min-width: 310px;
+	height: 400px;
+	margin: 0 auto;
+}
+.ui-autocomplete{
+	margin:0;
+	padding:0;
+	width:100px;
+}
+
+.ui-menu-item{
+	list-style-type:none;
+	overflow:auto;
+}

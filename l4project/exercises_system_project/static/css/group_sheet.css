@@ -1,0 +1,17 @@
+.ui-dialog-titlebar-close{
+	display: none;
+}
+.ui-front {
+	z-index:1000000;
+
+}
+.ui-dialog {
+	margin:50px;
+
+}
+
+
+@media print
+
+* {display:none;}
+#student_table {display:table;}
