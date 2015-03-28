@@ -1,0 +1,1 @@
+This is where you place the templates (the HTML files) for the different pages of WEAVE. 
