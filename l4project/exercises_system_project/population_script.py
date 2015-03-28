@@ -32,7 +32,7 @@ def populate_doc_types(filepath):
 						add_fragment_style(doc_type,frag_type,text_style_attr_dict)
 
 
-# A method to add the fragment style to the database
+# A method to add a fragment style to the database
 def add_fragment_style(document_type,fragment_type, text_style_attr_dict):
 	font = text_style_attr_dict['font']
 	font_size = text_style_attr_dict['size']
@@ -41,30 +41,25 @@ def add_fragment_style(document_type,fragment_type, text_style_attr_dict):
 	italic = str_to_bool(text_style_attr_dict['italic'])
 	underlined = str_to_bool(text_style_attr_dict['underline'])
 	fragment_style = FragmentStyle.objects.get_or_create(font = font,bold = bold, italic = italic, underlined = underlined, font_size = font_size,type=fragment_type)[0]
-	if fragment_style is None:
-		print "none"
 	return fragment_style
-	
+
+# A method to add a document type to the database
 def add_document_type(document_type_attr_dict):
 	name = document_type_attr_dict['name']
 	kind = document_type_attr_dict['kind']
 	document_type = DocumentType.objects.get_or_create(name=name)[0]
 	document_type.kind = kind
 	document_type.save()
-	if document_type is None:
-		print "doc type none"
 	return document_type
 
-	
+# A method to add a fragment type to the database
 def add_fragment_type(document_type,fragment_type_attr_dict):
 	name = fragment_type_attr_dict['name']
 	kind = fragment_type_attr_dict['kind']
 	fragment_type = FragmentType.objects.get_or_create(document_type=document_type,name=name,kind=kind)[0]
-	if fragment_type is None:
-		print "frag type none"
 	return fragment_type
 	
-
+# A method to convert a string to a boolean
 def str_to_bool(s):
 	if s == 'true':
 		 return True
@@ -92,7 +87,7 @@ def populate_documents(filepath):
 				fragAttrDict = fragment.attrib
 				add_fragment(doc,fragAttrDict)
 
-
+# A method to add a document to the database
 def add_document(attributesDict):
 	try:
 		document_id = attributesDict['ID']
@@ -108,10 +103,9 @@ def add_document(attributesDict):
 		d.save()
 		return d
 	except (IntegrityError, IndexError, KeyError):
-		print "doc none"
 		return None
 
-# ASK how to populate style depending on fragment type automatically
+# A method to add a fragment to the database
 def add_fragment(doc, attributesDict):
 	try:
 		type = attributesDict['type']
@@ -129,7 +123,6 @@ def add_fragment(doc, attributesDict):
 		f = Fragment.objects.get_or_create(id = id,document = doc, style = fragment_style, type = fragment_type, text = text, order = order)[0]
 
 	except (IntegrityError, IndexError, KeyError):
-		print "frag none"
 		pass
 
 ##############################################################################################
@@ -144,7 +137,7 @@ def populate_applications(filepath):
 	for application in root:
 		add_application(application)
 
-
+# A method to add an example to the database
 def add_application(app):
 	try:
 		applicationAttributesDict = app.attrib
@@ -157,9 +150,9 @@ def add_application(app):
 			panelAttributesDict = panel.attrib
 			add_panel(application,panelAttributesDict)
 	except (IntegrityError, KeyError):
-		print "app none"
 		pass
-	
+
+# A method to add a panel to the database
 def add_panel(application, attributesDict):
 	try:
 		number = json.loads(attributesDict['number'])
@@ -170,7 +163,6 @@ def add_panel(application, attributesDict):
 			document = document[0]
 			p = Panel.objects.get_or_create(application = application, number = number, type = type, document = document)[0]
 	except (IntegrityError, ObjectDoesNotExist, KeyError):
-		print "panel none"
 		pass
 
 ##############################################################################################
@@ -200,7 +192,7 @@ def populate_processes(filepath):
 
 
 
-	
+# A method to add a step to the database
 def add_step(application, attributesDict):
 	try:
 		order = attributesDict['num']
@@ -210,10 +202,9 @@ def add_step(application, attributesDict):
 		s = Step.objects.get_or_create(application=application, order = order)[0]
 		return s
 	except (IntegrityError, ObjectDoesNotExist):
-		print "step none"
 		return None
 
-#assumes that fragment and operation appear at most once. If more, the last value is taken
+# A method to add a change to the database
 def add_change(application, step, element):
 	fragment = None
 	operation = ''
@@ -240,24 +231,21 @@ def add_change(application, step, element):
 					content = content.replace('<','&lt')
 					content = content.replace('>','&gt')
 					o = Option.objects.get_or_create(question = question, number = number, content = content)[0]
-			else: 
-				print(child.tag)
-
 		if operation != 'Ask Answer':
 			c = Change.objects.get_or_create(document = document, step = step, fragment = fragment, operation = operation)[0]
 		else:
 			c = Change.objects.get_or_create(document = document, step = step, question = question, operation = operation)[0]
 	except (IntegrityError, ObjectDoesNotExist, KeyError):
-		print "change none"
 		pass
-			
+		
+
+# A method to add an explanation to the database
 def add_explanation(step, element):
 	text = element.text
 	text = text.replace('\n','<br>').replace('\r', '<br>');
 	try:
 		e = Explanation.objects.get_or_create(step = step, text = text)[0]
 	except:
-		print "explanations none"
 		pass
 
 
@@ -266,27 +254,44 @@ def add_explanation(step, element):
 
 if __name__ == '__main__':
 	print "Starting DocumentFragment population script..."
+	
+	print 'Number of arguments:', len(sys.argv), 'arguments.'
+	print 'Argument List:', str(sys.argv)
+	
 	os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'exercises_system_project.settings')
 	from exerciser.models import FragmentStyle, Document, DocumentType, FragmentType, Fragment, Step, Change, Question, Explanation, Option, Application, Panel, AcademicYear
 	from django.db import IntegrityError
 	from django.core.exceptions import ObjectDoesNotExist
 	
 	# Specify the file containing Doc Types
-	doc_types_path = os.path.join(os.path.dirname(__file__), 'cs1ct/Doc Types.xml')
+	if len(sys.argv) > 1:
+		doc_types_path = sys.argv[1]
+	else: 
+		doc_types_path = os.path.join(os.path.dirname(__file__), 'cs1ct/Doc Types.xml')
 	populate_doc_types(doc_types_path)
 	
 	# Specify the file containing Documents
-	documents_path = os.path.join(os.path.dirname(__file__), 'newexample/Documents.xml')
+	if len(sys.argv) > 2:
+		documents_path = sys.argv[2]
+	else: 
+		documents_path = os.path.join(os.path.dirname(__file__), 'newexample/Documents.xml')
 	populate_documents(documents_path)
 
 	# Specify the file containing Applications
-	applications_path = os.path.join(os.path.dirname(__file__), 'newexample/Applications.xml')
+	if len(sys.argv) > 3:
+		applications_path = sys.argv[3]
+	else: 
+		applications_path = os.path.join(os.path.dirname(__file__), 'newexample/Applications.xml')
 	populate_applications(applications_path)
 	
 	
 	# Specify the file containing Processes
-	processes_path = os.path.join(os.path.dirname(__file__), 'newexample/Processes.xml')
+	if len(sys.argv) > 4:
+		processes_path = sys.argv[4]
+	else:
+		processes_path = os.path.join(os.path.dirname(__file__), 'newexample/Processes.xml')
 	populate_processes(processes_path)
 	
 	#Add an academic year
 	academic_year = AcademicYear.objects.get_or_create(start = 2014)[0]
+
