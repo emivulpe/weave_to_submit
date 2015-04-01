@@ -146,9 +146,10 @@ def add_application(app):
 		application = Application.objects.get_or_create(name = name)[0]
 		#application.layout = layout
 		application.save()
-		for panel in app.iter('panel'):
-			panelAttributesDict = panel.attrib
-			add_panel(application,panelAttributesDict)
+		if len(Panel.objects.filter(application = application)) == 0:
+			for panel in app.iter('panel'):
+				panelAttributesDict = panel.attrib
+				add_panel(application,panelAttributesDict)
 	except (IntegrityError, KeyError):
 		pass
 

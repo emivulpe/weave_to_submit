@@ -5,7 +5,7 @@ From here you can:
 ######################## Create the database ####################
 
 From this directory you can create the database for WEAVE by running the command: 
-	python manage.py runserver
+	python manage.py syncdb
 
 You will be prompted whether you want to create a superuser account. This account will allow you to view the admin interface which can be found on 127.0.0.1:8000/admin when you are running it on the local server. In this interface you will be able to see the objects in the database. Remember that every time you add a new object class for the database in exerciser/models.py you need to register that class for the admin interface in the exerciser/admin.py by importing the object and adding the line admin.site.register(NameOfTheNewClass).
 

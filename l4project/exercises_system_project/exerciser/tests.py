@@ -9,7 +9,7 @@ from django.utils.importlib import import_module
 from django.core.urlresolvers import reverse
 
 
-"""
+
 # models test
 class ApplicationTest(TestCase):
 
@@ -609,7 +609,7 @@ class GetStudentsTests(TestCase):
 		response = c.get(reverse('get_students'), {'group' : 'test group', 'year' : 2015})
 		self.assertEqual(response.status_code, 200)	
 
-"""
+
 class GetQuestionDataTests(TestCase):
 	def setUp(self):
 		# Setup Test User
