@@ -955,7 +955,7 @@ def register(request):
 		# Print problems to the terminal.
 		# They'll also be shown to the user.
 		else:
-			print user_form.errors , group_form.errors
+			print user_form.errors
 
 	request.session['registered'] = registered
 	# Render the template depending on the context.

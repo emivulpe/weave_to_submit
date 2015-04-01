@@ -45,7 +45,7 @@ function storeDetails() {
             message += " , group id " + group_name + " (" + academic_year + ")"; 
 
             if (student_name != "") {
-                message += " and student id " + student_name;
+                message += " and pupil id " + student_name;
             }
         }
     } else {
@@ -101,7 +101,7 @@ function chooseStudentStep() {
     $("#submit_button").val("Submit");
     $("#submit_button").prop("type", "submit");
     $("#submit_button").attr('onclick', 'saveStudent()');
-    $("#no_id").val('No student ID');
+    $("#no_id").val('No pupil ID');
     $("#unsuccess_message").text('');
 }
 
@@ -133,8 +133,8 @@ function deleteGroup() {
 
 function deleteStudent() {
     $.post('/weave/del_session_variable/', {
-        csrfmiddlewaretoken: csrftoken,
-        to_delete: 'student'
+        'csrfmiddlewaretoken': csrftoken,
+        'to_delete': 'student'
     });
     chooseGroupStep();
 }
@@ -142,8 +142,8 @@ function deleteStudent() {
 
 function deleteYear() {
     $.post('/weave/del_session_variable/', {
-        csrfmiddlewaretoken: csrftoken,
-        to_delete: 'year'
+        'csrfmiddlewaretoken': csrftoken,
+        'to_delete': 'year'
     });
     chooseTeacherStep();
 }
@@ -154,8 +154,8 @@ function saveStudent() {
     var student = $("#student").val();
 
     var request = $.post("/weave/register_student_with_session/", {
-        student: student,
-        csrfmiddlewaretoken: csrftoken
+        'student': student,
+        'csrfmiddlewaretoken': csrftoken
     });
 
     request.done(function(success) {
@@ -166,7 +166,7 @@ function saveStudent() {
             $("#back_button").hide();
         } else {
 
-            $("#unsuccess_message").text("Sorry, but the student ID " + student + " is invalid.Please try again, or ask your teacher for the correct id.  If your teacher didn’t give you an id to work with, just press <No student ID>.");
+            $("#unsuccess_message").text("Sorry, but the pupil ID " + student + " is invalid.Please try again, or ask your teacher for the correct id.  If your teacher didn’t give you an id to work with, just press <No pupil ID>.");
 
         }
     });
@@ -178,8 +178,8 @@ function saveTeacher() {
     $("#buttons").hide();
 
     var request = $.post("/weave/register_teacher_with_session/", {
-        teacher: teacher,
-        csrfmiddlewaretoken: csrftoken
+        'teacher': teacher,
+        'csrfmiddlewaretoken': csrftoken
     });
 
     request.done(function(reply) {
@@ -191,7 +191,7 @@ function saveTeacher() {
 
         } else {
 
-            $("#unsuccess_message").text("Sorry, but teacher ID " + teacher + " is invalid. Please, try again, or ask your teacher for the correct id.  If your teacher didn’t give you an id to work with, just press <No Teacher ID> to continue!");
+            $("#unsuccess_message").text("Sorry, but teacher ID " + teacher + " is invalid. Please, try again, or ask your teacher for the correct id.  If your teacher didn’t give you an id to work with, just press <No teacher ID> to continue!");
         }
 
         $("#buttons").show();
@@ -204,8 +204,8 @@ function saveGroup() {
     var group = document.getElementById("group_list").value;
 
     var request = $.post("/weave/register_group_with_session/", {
-        group: group,
-        csrfmiddlewaretoken: csrftoken
+        'group': group,
+        'csrfmiddlewaretoken': csrftoken
     });
 
     request.done(function(success) {
@@ -217,7 +217,7 @@ function saveGroup() {
             chooseStudentStep();
 
         } else {
-            $("#unsuccess_message").text("Sorry, but the group ID " + group + " is invalid. Please, try again, or ask your teacher for the correct id.  If your teacher didn’t give you an ID to work with, just press <No Group ID> to continue!");
+            $("#unsuccess_message").text("Sorry, but the group ID " + group + " is invalid. Please, try again, or ask your teacher for the correct id.  If your teacher didn’t give you an ID to work with, just press <No group ID> to continue!");
         }
         $("#buttons").show();
     });
@@ -229,8 +229,8 @@ function saveYear() {
     $("#buttons").hide();
     var year = document.getElementById("academic_year_select").value;
     var request = $.post("/weave/register_year_with_session/", {
-        year: year,
-        csrfmiddlewaretoken: csrftoken
+        'year': year,
+        'csrfmiddlewaretoken': csrftoken
     });
 
     request.done(function(success) {
@@ -238,8 +238,8 @@ function saveYear() {
         if (success) {
             
             groups_request = $.post("/weave/get_groups_for_year/", {
-                year: year,
-                csrfmiddlewaretoken: csrftoken
+                'year': year,
+                'csrfmiddlewaretoken': csrftoken
             });
             groups_request.done(function(groups) {
                 for (var groupIndex in groups) {

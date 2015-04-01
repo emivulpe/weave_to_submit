@@ -7,7 +7,24 @@
 	<li><a id="btn_next" href="#" style=" top: 2px;"><label id="forward_button_label" style="color:red;font-size:24px;cursor:pointer;">Start</label>&nbsp;<i id="next_arrow" class="fa fa-step-forward fa-lg landing-icon fa" style="display:none;"></i></a></li>
 	<li><a id="btn_reset" href="#" style="top: 2px;visibility:hidden;">Reset&nbsp;<i class="fa fa-refresh fa-lg landing-icon fa"></i></a></li>
 {% endblock %}
-
+{% block examples %} 
+	<li id="application_list" class="dropdown">
+		<div class="btn-group" id="myDropdown">
+		  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="position: relative; top: 10px;">
+			<input id="application_text" style="background-color: inherit; border: 0; font-size: 12pt; padding: 0; margin: 0; color: gray; " value="Select Example..."  />
+			
+		  </a>
+			{% if applications %}
+				<ul class="dropdown-menu" id="application_list">
+					{% for application in applications %}
+					<li><a href="/weave/application/{{ application.url }}">{{ application.name }}</a></li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		</div>
+			
+	</li>
+{% endblock %}
 {% block body_block %}
 	{% if application %}
 		{% if panels %}
@@ -30,7 +47,7 @@
 			</div>
 			<div class="row" id="explanation_row">
 				<div class = "resizable" id="explanation_container">
-					<div id = "explanation" style="line-height: 104%;padding:2px;font-size:15px;"> </div>
+					<div id = "explanation" style="line-height: 104%;padding:2px;font-size:15px;">To start the example click on the Start button. You can move through the steps by clicking of the arrows that will appear on screen or using the left and right arrows on the keyboard.</div>
 					<div class="ui-resizable-handle ui-resizable-n" id = "north"></div>
 				</div>
 			</div>

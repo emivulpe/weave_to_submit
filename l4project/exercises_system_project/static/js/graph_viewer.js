@@ -16,7 +16,7 @@ function getNextStepData() {
             'step': step
         };
         var chartDetails = {
-            "xAxisTitle": "Students",
+            "xAxisTitle": "Pupils",
             "yAxisTitle": "Time",
             "seriesName": selectedApplication + "- Group " + selectedGroup,
             "chartType": "column",
@@ -57,11 +57,11 @@ function getPrevStepData() {
             'step': step
         };
         var chartDetails = {
-            xAxisTitle: "Students",
-            yAxisTitle: "Time",
-            seriesName: selectedApplication + "- Group " + selectedGroup,
+            'xAxisTitle': "Pupils",
+            'yAxisTitle': "Time",
+            'seriesName': selectedApplication + "- Group " + selectedGroup,
             "chartType": "column",
-            selectedOption: "Class Steps",
+            'selectedOption': "Class Steps",
             "chartSubtitle": "Step " + step
         }
         drawChartMerged(selectedItems, chartDetails, selectedOption, url, "container");
@@ -158,7 +158,7 @@ function tooltipFormat(el, selectedOption) {
             'Explanation: ' + el.point.explanation_start + '<br />';
     } else if (selectedOption == "Student Answers") {
         return 'Times Chosen: ' + el.point.y + '<br/>' +
-            'Students: ' + el.point.students;
+            'Pupils: ' + el.point.students;
     } else if (selectedOption == "Class Steps") {
         return "Time: " + Highcharts.numberFormat(el.point.y, 1) + " s";
     } else {
@@ -255,7 +255,7 @@ function drawChartMerged(selectedItems, chartDetails, selectedOption, url, chart
                 } else {
                     if (selectedOption == "Class Steps") {
                         $('#' + chartContainer).find('.highcharts-container').hide();
-                        $('#' + chartContainer).html("<div class='no_stats_info'><br\><br\><br\><br\><br\><br\><i class='fa fa-asterisk' style='color:red'></i><span style='color:red'>Class Steps only shows data if you have given your students IDs. If you have, they might not have attempted this step.</span><div>");
+                        $('#' + chartContainer).html("<div class='no_stats_info'><br\><br\><br\><br\><br\><br\><i class='fa fa-asterisk' style='color:red'></i><span style='color:red'>Class Steps only shows data if you have given your pupils IDs. If you have, they might not have attempted this step.</span><div>");
                     }
 
                 }
@@ -441,13 +441,13 @@ $('#set_data_button').click(function() {
             step = parseInt(document.getElementById("step_list").value);
 
             var selectedItems = {
-                application: selectedApplication,
-                group: selectedGroup,
-                year: selectedYear,
-                step: step
+                'application': selectedApplication,
+                'group': selectedGroup,
+                'year': selectedYear,
+                'step': step
             };
             var chartDetails = {
-                "xAxisTitle": "Students",
+                "xAxisTitle": "Pupils",
                 "yAxisTitle": "Time",
                 "seriesName": selectedApplication + "- Group " + selectedGroup,
                 "chartType": "column",
@@ -526,7 +526,7 @@ function addQuestions() {
                 var question = questions[question_index];
                 var option = "<option value='" + question + "' >" + question + "</option>";
 
-                if ($("#question_list").children().length < questions.length) {
+                if ($("#question_list").children().length <= questions.length) {
                     $("#question_list").append(option);
                 }
             }
@@ -550,7 +550,7 @@ function addStudents(selectedYear, selectedGroup) {
                 var student = students[student_index];
                 var option = "<option value='" + student + "' >" + student + "</option>";
 
-                if ($("#student_list").children().length < students.length) {
+                if ($("#student_list").children().length <= students.length) {
                     $("#student_list").append(option);
                 }
             }
@@ -573,7 +573,7 @@ function addSteps() {
             for (var step_index in steps) {
                 var step = steps[step_index];
                 var option = "<option value='" + step + "' >" + step + "</option>";
-                if ($("#step_list").children().length < steps.length) {
+                if ($("#step_list").children().length <= steps.length) {
                     $("#step_list").append(option);
                 }
             }

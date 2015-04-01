@@ -13,8 +13,8 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6 text-center">
-				<br/><br/>
 				{% if request.session.student_registered %}
+				<h1 class="details">Choose an Example</h1>
 					<strong>You are registered
 						{% if request.session.teacher %} 
 							 with teacher id {{request.session.teacher}}
@@ -23,7 +23,7 @@
 								{% if request.session.year %} 
 									 ({{request.session.year}}/{{request.session.year|add:"1"}})
 									{% if request.session.student %} 
-										 with student id {{request.session.student}}.
+										 with pupil id {{request.session.student}}.
 									{% else %}
 										. 
 									{% endif %}
@@ -41,7 +41,7 @@
 							<table style="margin: 0 auto;">
 								<tr>
 									<td>
-										<input placeholder="Search Application" id="application_search_box" type="text" style="margin:10px;"/> 
+										<input placeholder="Search Example" id="application_search_box" type="text" style="margin:10px;"/> 
 									</td>
 								</tr>
 								<tr>
@@ -80,7 +80,7 @@
 											<option value="{{year.start}}" >{{ year.start}}/{{ year.start|add:"1" }}</option>
 										{% endfor %}
 									</select>
-									<i class="fa fa-question-circle" title="Choose the academic year your group belongs to. If you weren't given a Group ID, click on the <No year> button to proceed."></i>
+									<i class="fa fa-question-circle" title="Choose the academic year your group belongs to. If you weren't given a group ID, click on the <No year> button to proceed."></i>
 								</td>
 							</tr>
 							
@@ -92,9 +92,9 @@
 							</tr>
 							
 							<tr id="student_details" class="details" style="display:none" >
-								<td style="width: 40%; text-align: right; padding-right: 10px;">Student ID: </td>
+								<td style="width: 40%; text-align: right; padding-right: 10px;">Pupil ID: </td>
 								<td style="text-align: left;">
-									<input id = "student" type="text" name="StudentId" style="margin-right: 5px; padding: 5px; font-size: 12pt; font-weight: bold; margin-left: 10px;width:200px;" /><i class="fa fa-question-circle" title="Enter the student ID your teacher assigned to you. If you weren't given such an ID, click on <No student ID> button to proceed."></i>
+									<input id = "student" type="text" name="StudentId" style="margin-right: 5px; padding: 5px; font-size: 12pt; font-weight: bold; margin-left: 10px;width:200px;" /><i class="fa fa-question-circle" title="Enter the pupil ID your teacher assigned to you. If you weren't given such an ID, click on <No pupil ID> button to proceed."></i>
 								</td>
 							</tr>
 							
@@ -118,8 +118,9 @@
 			</div>
 				
 			<div class="col-md-6 text-center">
+			<h1 class="details">Tutorial</h1>
 				<br/><br/>
-				<strong id="tutorial_intro_text">Weave will help you improve your skills in solving problems. Click on the Next arrow below for a short tutorial on how to use it!</strong>
+				<strong id="tutorial_intro_text">WEAVE will help you improve your skills in solving problems. Click on the arrows below for a short tutorial on how to use it!</strong>
 				<ul>
 					<li id = "prev_step" style="display: none;float:left;"><a id="btn_prev_step" href="#" style="position: relative; top: 2px;color:gray;"><i id="prev_step_arrow"class="fa fa-step-backward fa-lg landing-icon fa"></i>&nbsp;<label for="prev_step_arrow">Previous</label></a></li>
 					<li id = "next_step" style="display: inline;float:right;"><a id="btn_next_step" href="#" style="position: relative; top: 2px;color:gray;"><label for="next_step_arrow">Next</label>&nbsp;<i id="next_step_arrow" class="fa fa-step-forward fa-lg landing-icon fa"></i></a></li>
@@ -153,30 +154,30 @@
 				case 2:
 					$("#prev_step").css("display", "inline");
 					$("#tutorial_screenshot").show();
-					$("#tutorial_text").text("To start using Weave, enter any details given by your teacher and press the respective button. If none given click on No teacher ID, etc.");
+					$("#tutorial_text").text("To start using WEAVE, enter any details given by your teacher and press the respective button. If none given, click on <No teacher ID>, etc.");
 					$("#tutorial_screenshot").attr("src", "{% static 'media/specify details.jpg' %}");
 
 					break;
 				case 3:
 					$("#prev_step").css("display", "inline");
 					$("#tutorial_screenshot").show();
-					$("#tutorial_text").text("You can change your details by clicking on Change Details button on the top right corner of the page.");
+					$("#tutorial_text").text("You can change your details by clicking on <Change Details> button on the top right corner of the page.");
 					$("#tutorial_screenshot").attr("src", "{% static 'media/reset details.jpg' %}");
 					break;
 				case 4:
-					$("#tutorial_text").text("An application selector will appear both on the toolbar next to the Home icon, and on the left of this tutorial. You can search for an example by typing in the text box.");
+					$("#tutorial_text").text("An example selector will appear on the left of this tutorial. You can search for an example by typing in the text box.");
 					$("#tutorial_screenshot").attr("src", "{% static 'media/select application.jpg' %}");
 					break;
 				case 5:
-					$("#tutorial_text").text("Start an example by clicking on the Start button on the top right of the page. ");
+					$("#tutorial_text").text("Start an example by clicking the <Start> button on the top right of the page. ");
 					$("#tutorial_screenshot").attr("src", "{% static 'media/start.jpg' %}");
 					break;
 				case 6:
-					$("#tutorial_text").text("You can go back and forward through the steps, as well as reset the example by the buttons on the top right of the page. Alternatively, use the arrow buttons to navigate through the worked example.");
+					$("#tutorial_text").text("You can go back and forward through the steps, as well as reset the example by the buttons on the top right of the page. Alternatively, use the arrow keys on the keyboard to navigate through the worked example.");
 					$("#tutorial_screenshot").attr("src", "{% static 'media/controls.jpg' %}");
 					break;
 				case 7:
-					$("#tutorial_text").text("Note the explanation panel.");
+					$("#tutorial_text").text("Note the explanation panel. Here the process of thinking for each step will be shown.");
 					$("#tutorial_screenshot").attr("src", "{% static 'media/explanation.jpg' %}");
 					break;
 				case 8:

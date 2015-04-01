@@ -35,23 +35,7 @@
 						<i class="fa fa-home fa-lg landing-icon fa"></i>&nbsp;<span class="landing-text" style="position: relative; top: 2px;">Home</span>
 						</a>
 					</li>
-
-					<li id="application_list" class="dropdown">
-						<div class="btn-group" id="myDropdown">
-						  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="position: relative; top: 10px;">
-							<input id="application_text" style="background-color: inherit; border: 0; font-size: 12pt; padding: 0; margin: 0; color: gray; " value="Select Application..."  />
-							
-						  </a>
-							{% if applications %}
-								<ul class="dropdown-menu" id="application_list">
-									{% for application in applications %}
-									<li><a href="/weave/application/{{ application.url }}">{{ application.name }}</a></li>
-									{% endfor %}
-								</ul>
-							{% endif %}
-						</div>
-							
-					</li>
+					{% block examples %} {% endblock %}
 				</ul>
 				<ul class="nav nav-center">
 					<span style="font-size: 16pt; font-weight: bold; position: relative; top: 5px;">{% block app_name %} {% endblock %}</span>

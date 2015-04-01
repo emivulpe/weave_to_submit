@@ -110,7 +110,7 @@ function showSuccessMessage(success, chosenGroup) {
         $("#success_message").css("color", "green");
     } else {
         $("#success_message").before("<i class='fa fa-times success_icon' style='color:red'></i>");
-        $("#success_message").text(" There was a problem making the changes to group " + chosenGroup + "! Please ensure you are entering a valid group and number of students and try again!");
+        $("#success_message").text(" There was a problem making the changes to group " + chosenGroup + "! Please ensure you are entering a valid group name and number of pupils and try again!");
         $("#success_message").css("color", "red");
     }
     $("#success_dialog").dialog('open');

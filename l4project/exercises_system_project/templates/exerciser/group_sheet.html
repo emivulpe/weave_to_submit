@@ -10,13 +10,11 @@
 	{% if not request.session.information_seen %}
 		<div id="information_dialog" title="Group Sheet Information" style="margin:20px;display:none;">
 			<div id = "message">
-				<p>
-					This page is designed so you can print it, and then fill in student names.  You can then cut off the right hand strip of student IDs, and pass them to the relevant students.  Then you and the student have a record of their unique student ID. </p>
-					This page is designed so you can print it, and then fill in student names.  You can then cut off the right hand strip of student IDs, and pass them to the relevant students.  Then you and the student have a record of their unique student ID. </p>
+				<p> This page is designed so you can print it, and then fill in pupil names.  You can then cut off the right hand strip of pupil IDs, and pass them to the relevant pupils.  Then you and the pupil have a record of their unique pupil ID. </p>
 
 				<p> Some teachers have suggested that you would hand them out and take them in again on each lesson where you were using the system.  Alternatively, the pupils just keep their ID safely, for use in the classroom or at home.  You always have the original on paper. </p>
 
-				<p> We do not keep your name or your pupils’ names on-line, so keep the mapping from name to student ID secure.  You can select the columns of student ID here and paste them into a spreadsheet, and keep a more secure copy of name to ID there, if you wish. </p>
+				<p> We do not keep your name or your pupils’ names on-line, so keep the mapping from name to pupil ID secure.  You can select the columns of pupil ID here and paste them into a spreadsheet, and keep a more secure copy of name to ID there, if you wish. </p>
 			</div>
 		</div>
 		{% endif %}
@@ -27,8 +25,8 @@
 			<tr>
 				<th>Firstname</th>
 				<th>Lastname</th> 
-				<th>Student ID</th>
-				<th>Student ID</th>
+				<th>Pupil ID</th>
+				<th>Pupil ID</th>
 			</tr>
 			{% for student in students %}
 			
